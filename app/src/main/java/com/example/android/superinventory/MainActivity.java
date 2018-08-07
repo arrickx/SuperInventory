@@ -1,5 +1,6 @@
 package com.example.android.superinventory;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,8 @@ import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 import com.example.android.superinventory.data.InventoryDbHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private InventoryDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mDbHelper = new InventoryDbHelper(this);
 
         displayDatabaseInfo();
     }
@@ -62,6 +68,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void insertInventory() {
+        // Gets the database in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Create a ContentValues object where column names are the keys,
+        // and the sample attributes are the values.
+        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "iPhone");
+        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 699.99);
+        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, 3);
+        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Apple Corp.");
+        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "123-456-7890");
+
+        long newRowId = db.insert(InventoryEntry.TABLE_NAME, null, values);
+
+        Log.v("MainActivity","New row ID" + newRowId);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -71,14 +95,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Insert dummy data" menu option
+            case R.id.action_insert_dummy_data:
+                insertInventory();
+                displayDatabaseInfo();
+                return true;
+            // Respond to a click on the "Delete all entries" menu option
+            case R.id.action_delete_all:
+                // Do nothing for now
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
