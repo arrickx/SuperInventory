@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -13,38 +14,29 @@ import android.widget.Toast;
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 import com.example.android.superinventory.data.InventoryDbHelper;
 
+import org.w3c.dom.Text;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 //Create new inventory or edit the existing inventory
 public class EditorActivity extends AppCompatActivity {
 
-    //EditText field for product name
-    private EditText mProductNameEditText;
-
-    //EditText field for product price
-    private EditText mProductPriceEditText;
-
-    //EditText field for product quantity
-    private EditText mProductQuantityEditText;
-
-    //EditText field for supplier name
-    private EditText mSupplierNameEditText;
-
-    //EditText field for supplier phone number
-    private EditText mSupplierPhoneEditText;
+    @BindView(R.id.edit_product_name) EditText mProductNameEditText;
+    @BindView(R.id.edit_product_price) EditText mProductPriceEditText;
+    @BindView(R.id.edit_product_quantity) EditText mProductQuantityEditText;
+    @BindView(R.id.edit_supplier_name) EditText mSupplierNameEditText;
+    @BindView(R.id.edit_supplier_phone) EditText mSupplierPhoneEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
-        mProductNameEditText = findViewById(R.id.edit_product_name);
-        mProductPriceEditText = findViewById(R.id.edit_product_price);
-        mProductQuantityEditText = findViewById(R.id.edit_product_quantity);
-        mSupplierNameEditText = findViewById(R.id.edit_supplier_name);
-        mSupplierPhoneEditText = findViewById(R.id.edit_supplier_phone);
+        ButterKnife.bind(this);
     }
 
-    //Get user input from editor and save new pet into database.
-    private void insertPet() {
+    //Get user input from editor and save new inventory into database.
+    private void insertInventory() {
         String productNameString = mProductNameEditText.getText().toString().trim();
         String productPriceString = mProductPriceEditText.getText().toString().trim();
         String productQuantityString = mProductQuantityEditText.getText().toString().trim();
@@ -81,6 +73,40 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
+    //Check if EditText is empty or not
+    boolean isEmpty(EditText text) {
+        CharSequence str = text.getText().toString();
+        return TextUtils.isEmpty(str);
+    }
+
+    //Check if any of the EditText is empty, if so warning and do not insert the inventory.
+    boolean checkData(){
+        if(isEmpty(mProductNameEditText)||isEmpty(mProductPriceEditText)||
+                isEmpty(mProductQuantityEditText)||isEmpty(mSupplierNameEditText)||
+                isEmpty(mSupplierPhoneEditText)){
+            if (isEmpty(mProductNameEditText)) {
+                mProductNameEditText.setError("Please fill out this item");
+            }
+            if (isEmpty(mProductPriceEditText)) {
+                mProductPriceEditText.setError("Please fill out this item");
+            }
+            if (isEmpty(mProductQuantityEditText)) {
+                mProductQuantityEditText.setError("Please fill out this item");
+            }
+            if (isEmpty(mSupplierNameEditText)) {
+                mSupplierNameEditText.setError("Please fill out this item");
+            }
+            if (isEmpty(mSupplierPhoneEditText)) {
+                mSupplierPhoneEditText.setError("Please fill out this item");
+            }
+            return false;
+        } else {
+            insertInventory();
+            finish();
+            return true;
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
@@ -95,11 +121,8 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save pet to database
-                insertPet();
-                // Exit activity
-                finish();
-                return true;
+                //If all data included, save inventory into database.
+                checkData();
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Do nothing for now
