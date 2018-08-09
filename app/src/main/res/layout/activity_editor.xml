@@ -1,108 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    style="@style/LinearBaseLayout"
     tools:context=".EditorActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/EditorItemLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="product name" />
+            style="@style/EditorItemTitle"
+            android:text="@string/product_name" />
 
         <EditText
             android:id="@+id/edit_product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textCapWords"
-            android:imeOptions="actionNext"
-            android:hint="new Product"/>
+            style="@style/EditTextLayout"
+            android:hint="@string/product_name_hint"
+            android:inputType="textCapWords" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/EditorItemLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="product price" />
+            style="@style/EditorItemTitle"
+            android:text="@string/product_price" />
 
         <EditText
             android:id="@+id/edit_product_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:imeOptions="actionNext"
-            android:hint="19.99"/>
+            style="@style/EditTextLayout"
+            android:hint="@string/product_price_hint"
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/EditorItemLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="quantity" />
+            style="@style/EditorItemTitle"
+            android:text="@string/product_quantity" />
 
         <EditText
             android:id="@+id/edit_product_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:imeOptions="actionNext"
-            android:hint="10"/>
+            style="@style/EditTextLayout"
+            android:hint="@string/product_quantity_hint"
+            android:inputType="number" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/EditorItemLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="supplier" />
+            style="@style/EditorItemTitle"
+            android:text="@string/supplier_name" />
 
         <EditText
             android:id="@+id/edit_supplier_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textCapWords"
-            android:imeOptions="actionNext"
-            android:hint="super book store"/>
+            style="@style/EditTextLayout"
+            android:hint="@string/supplier_name_hint"
+            android:inputType="textCapWords" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/EditorItemLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="supplier phone number" />
+            style="@style/EditorItemTitle"
+            android:text="@string/supplier_phone" />
 
         <EditText
             android:id="@+id/edit_supplier_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:imeOptions="actionNext"
-            android:hint="800-123-4567"/>
+            style="@style/EditTextLayout"
+            android:hint="@string/supplier_phone_hint"
+            android:inputType="phone" />
 
     </LinearLayout>
 </LinearLayout>

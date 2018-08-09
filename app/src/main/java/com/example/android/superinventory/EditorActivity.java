@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -16,17 +17,22 @@ import com.example.android.superinventory.data.InventoryDbHelper;
 
 import org.w3c.dom.Text;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Create new inventory or edit the existing inventory
 public class EditorActivity extends AppCompatActivity {
 
+    //Bind view with Butter Knife for cleaner code.
     @BindView(R.id.edit_product_name) EditText mProductNameEditText;
     @BindView(R.id.edit_product_price) EditText mProductPriceEditText;
     @BindView(R.id.edit_product_quantity) EditText mProductQuantityEditText;
     @BindView(R.id.edit_supplier_name) EditText mSupplierNameEditText;
     @BindView(R.id.edit_supplier_phone) EditText mSupplierPhoneEditText;
+    @BindString(R.string.warning_message) String warningMessage;
+    @BindString(R.string.error_message) String errorMessage;
+    @BindString(R.string.success_message) String successMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +48,6 @@ public class EditorActivity extends AppCompatActivity {
         String productQuantityString = mProductQuantityEditText.getText().toString().trim();
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
         String supplierPhoneString = mSupplierPhoneEditText.getText().toString().trim();
-        double productPrice = Double.parseDouble(productPriceString);
-        int productQuantity = Integer.parseInt(productQuantityString);
 
         //Create database helper
         InventoryDbHelper mDbHelper = new InventoryDbHelper(this);
@@ -55,8 +59,8 @@ public class EditorActivity extends AppCompatActivity {
         // and pet attributes from the editor are the values.
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, productNameString);
-        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, productPrice);
-        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, productPriceString);
+        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, productQuantityString);
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, supplierPhoneString);
 
@@ -66,10 +70,10 @@ public class EditorActivity extends AppCompatActivity {
         // Show a toast message depending on whether or not the insertion was successful
         if (newRowId == -1) {
             // If the row ID is -1, then there was an error with insertion.
-            Toast.makeText(this, "Error with saving inventory", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         } else {
             // Otherwise, the insertion was successful and we can display a toast with the row ID.
-            Toast.makeText(this, "Inventory saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, successMessage + newRowId, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -85,19 +89,19 @@ public class EditorActivity extends AppCompatActivity {
                 isEmpty(mProductQuantityEditText)||isEmpty(mSupplierNameEditText)||
                 isEmpty(mSupplierPhoneEditText)){
             if (isEmpty(mProductNameEditText)) {
-                mProductNameEditText.setError("Please fill out this item");
+                mProductNameEditText.setError(warningMessage);
             }
             if (isEmpty(mProductPriceEditText)) {
-                mProductPriceEditText.setError("Please fill out this item");
+                mProductPriceEditText.setError(warningMessage);
             }
             if (isEmpty(mProductQuantityEditText)) {
-                mProductQuantityEditText.setError("Please fill out this item");
+                mProductQuantityEditText.setError(warningMessage);
             }
             if (isEmpty(mSupplierNameEditText)) {
-                mSupplierNameEditText.setError("Please fill out this item");
+                mSupplierNameEditText.setError(warningMessage);
             }
             if (isEmpty(mSupplierPhoneEditText)) {
-                mSupplierPhoneEditText.setError("Please fill out this item");
+                mSupplierPhoneEditText.setError(warningMessage);
             }
             return false;
         } else {
@@ -109,8 +113,7 @@ public class EditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_editor.xml file.
-        // This adds menu items to the app bar.
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }

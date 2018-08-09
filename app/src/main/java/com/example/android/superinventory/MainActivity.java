@@ -17,7 +17,20 @@ import android.widget.TextView;
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 import com.example.android.superinventory.data.InventoryDbHelper;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+
+    //Bind view with Butter Knife for cleaner code.
+    @BindView(R.id.text_view_inventory) TextView displayView;
+    @BindString(R.string.dummy_product_name) String dummyProductName;
+    @BindString(R.string.dummy_supplier_name) String dummySupplierName;
+    @BindString(R.string.dummy_supplier_phone) String dummySupplierPhone;
+    @BindString(R.string.display_msg) String displayMessage;
+    @BindString(R.string.success_message) String successMessage;
+    @BindString(R.string.log_tag_1) String logTag;
 
     private InventoryDbHelper mDbHelper;
 
@@ -25,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -47,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
         displayDatabaseInfo();
     }
 
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the pets database.
-     */
+    //Temporary helper method to display information about the database
     private void displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
@@ -60,14 +71,63 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
 
-        // Perform this raw SQL query "SELECT * FROM inventory"
-        // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + InventoryEntry.TABLE_NAME, null);
+        String[] projection = {
+                InventoryEntry._ID,
+                InventoryEntry.COLUMN_PRODUCT_NAME,
+                InventoryEntry.COLUMN_PRODUCT_PRICE,
+                InventoryEntry.COLUMN_PRODUCT_QUANTITY,
+                InventoryEntry.COLUMN_SUPPLIER_NAME,
+                InventoryEntry.COLUMN_SUPPLIER_PHONE,
+
+        };
+
+        // Perform a query on the inventory table
+        Cursor cursor = db.query(
+                InventoryEntry.TABLE_NAME,   // The table to query
+                projection,            // The columns to return
+                null,                  // The columns for the WHERE clause
+                null,                  // The values for the WHERE clause
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // The sort order
+
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in the database table: " + cursor.getCount());
+            // inventory table in the database).
+            displayView.setText(displayMessage + cursor.getCount());
+            displayView.append("\n\n" + InventoryEntry._ID + " - " +
+                    InventoryEntry.COLUMN_PRODUCT_NAME + " - " +
+                    InventoryEntry.COLUMN_PRODUCT_PRICE + " - " +
+                    InventoryEntry.COLUMN_PRODUCT_QUANTITY + " - " +
+                    InventoryEntry.COLUMN_SUPPLIER_NAME + " - " +
+                    InventoryEntry.COLUMN_SUPPLIER_PHONE + "\n");
+
+            // Figure out the index of each column
+            int idColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
+            int productNameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME);
+            int productPriceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
+            int productQuantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
+            int supplierNameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_NAME);
+            int supplierPhoneColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_PHONE);
+
+            // Iterate through all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+                // Use that index to extract the String or Int value of the word
+                // at the current row the cursor is on.
+                int currentID = cursor.getInt(idColumnIndex);
+                String currentProductName = cursor.getString(productNameColumnIndex);
+                double currentPrice = cursor.getDouble(productPriceColumnIndex);
+                int currentQuantity = cursor.getInt(productQuantityColumnIndex);
+                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
+                String currentSupplierPhone = cursor.getString(supplierPhoneColumnIndex);
+                // Display the values from each column of the current row in the cursor in the TextView
+                displayView.append(("\n" + currentID + " - " +
+                        currentProductName + " - " +
+                        currentPrice + " - " +
+                        currentQuantity + " - " +
+                        currentSupplierName + " - " +
+                        currentSupplierPhone));
+            }
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
@@ -82,15 +142,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Create a ContentValues object where column names are the keys,
         // and the sample attributes are the values.
-        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "iPhone");
+        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, dummyProductName);
         values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 699.99);
         values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, 3);
-        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Apple Corp.");
-        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, "123-456-7890");
+        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, dummySupplierName);
+        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, dummySupplierPhone);
 
         long newRowId = db.insert(InventoryEntry.TABLE_NAME, null, values);
 
-        Log.v("MainActivity","New row ID" + newRowId);
+        Log.v(logTag,successMessage + newRowId);
     }
 
     @Override

@@ -1,4 +1,26 @@
 <resources>
     <string name="app_name">Super Inventory</string>
     <string name="action_settings">Settings</string>
+    <string name="action_insert_dummy_data">Insert Dummy Inventory</string>
+    <string name="action_delete_all_data">Delete All Inventory</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="warning_message">Please finish this item</string>
+    <string name="error_message">Error with saving inventory</string>
+    <string name="success_message">Inventory saved with row id: </string>
+    <string name="dummy_product_name">iPhone</string>
+    <string name="dummy_supplier_name">Apple Corp.</string>
+    <string name="dummy_supplier_phone">123–456–7890</string>
+    <string name="display_msg">Number of rows in the database table is : </string>
+    <string name="log_tag_1">MainActivity InsertInventory</string>
+    <string name="product_name">name</string>
+    <string name="product_price">price</string>
+    <string name="product_quantity">quantity</string>
+    <string name="supplier_name">supplier</string>
+    <string name="supplier_phone">tel no.</string>
+    <string name="product_name_hint">New Product Name</string>
+    <string name="product_price_hint">123.45</string>
+    <string name="product_quantity_hint">67</string>
+    <string name="supplier_name_hint">New Supplier Name</string>
+    <string name="supplier_phone_hint">800–800–8000</string>
 </resources>

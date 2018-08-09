@@ -4,10 +4,10 @@
     tools:context="com.example.android.superinventory.MainActivity">
     <item
         android:id="@+id/action_insert_dummy_data"
-        android:title="Insert Dummy Data"
+        android:title="@string/action_insert_dummy_data"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_delete_all"
-        android:title="Delete All Inventory"
+        android:title="@string/action_delete_all_data"
         app:showAsAction="never" />
 </menu>

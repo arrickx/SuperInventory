@@ -17,4 +17,35 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="LinearBaseLayout">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/simple_padding</item>
+        <item name="android:paddingRight">@dimen/simple_padding</item>
+    </style>
+
+    <style name="EditorItemLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">@dimen/simple_padding</item>
+    </style>
+
+    <style name="EditorItemTitle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/empty</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginLeft">@dimen/strong_padding</item>
+        <item name="android:textSize">@dimen/editor_title_font_size</item>
+    </style>
+
+    <style name="EditTextLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/empty</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:layout_marginRight">@dimen/strong_padding</item>
+    </style>
 </resources>
