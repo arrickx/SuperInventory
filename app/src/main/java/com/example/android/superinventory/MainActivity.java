@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 import com.example.android.superinventory.data.InventoryDbHelper;
 
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @BindString(R.string.dummy_supplier_phone) String dummySupplierPhone;
     @BindString(R.string.display_msg) String displayMessage;
     @BindString(R.string.success_message) String successMessage;
+    @BindString(R.string.error_message) String errorMessage;
     @BindString(R.string.log_tag_1) String logTag;
 
     private InventoryDbHelper mDbHelper;
@@ -63,13 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Temporary helper method to display information about the database
     private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        InventoryDbHelper mDbHelper = new InventoryDbHelper(this);
-
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
 
         String[] projection = {
                 InventoryEntry._ID,
@@ -82,14 +79,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Perform a query on the inventory table
-        Cursor cursor = db.query(
-                InventoryEntry.TABLE_NAME,   // The table to query
-                projection,            // The columns to return
-                null,                  // The columns for the WHERE clause
-                null,                  // The values for the WHERE clause
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                null);                   // The sort order
+        Cursor cursor = getContentResolver().query(InventoryEntry.CONTENT_URI, projection, null, null,null);
 
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
@@ -136,21 +126,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertInventory() {
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
         // Create a ContentValues object where column names are the keys,
         // and the sample attributes are the values.
+        ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, dummyProductName);
         values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, 699.99);
         values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, 3);
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, dummySupplierName);
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, dummySupplierPhone);
 
-        long newRowId = db.insert(InventoryEntry.TABLE_NAME, null, values);
+        // Insert a new row for dummyProductName into the provider using the ContentResolver.
+        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
 
-        Log.v(logTag,successMessage + newRowId);
+        // Show a toast message depending on whether or not the insertion was successful
+        if (newUri == null) {
+            // If the row ID is -1, then there was an error with insertion.
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast with the row ID.
+            Toast.makeText(this, successMessage , Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

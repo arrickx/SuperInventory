@@ -2,6 +2,7 @@ package com.example.android.superinventory;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -49,12 +50,6 @@ public class EditorActivity extends AppCompatActivity {
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
         String supplierPhoneString = mSupplierPhoneEditText.getText().toString().trim();
 
-        //Create database helper
-        InventoryDbHelper mDbHelper = new InventoryDbHelper(this);
-
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
         ContentValues values = new ContentValues();
@@ -64,16 +59,16 @@ public class EditorActivity extends AppCompatActivity {
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE, supplierPhoneString);
 
-        // Insert a new row for pet in the database, returning the ID of that new row.
-        long newRowId = db.insert(InventoryEntry.TABLE_NAME, null, values);
+        // Insert a new row of inventory into the provider using the ContentResolver.
+        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
 
         // Show a toast message depending on whether or not the insertion was successful
-        if (newRowId == -1) {
+        if (newUri == null) {
             // If the row ID is -1, then there was an error with insertion.
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         } else {
             // Otherwise, the insertion was successful and we can display a toast with the row ID.
-            Toast.makeText(this, successMessage + newRowId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, successMessage , Toast.LENGTH_SHORT).show();
         }
     }
 

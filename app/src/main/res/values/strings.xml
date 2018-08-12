@@ -7,7 +7,7 @@
     <string name="action_delete">Delete</string>
     <string name="warning_message">Please finish this item</string>
     <string name="error_message">Error with saving inventory</string>
-    <string name="success_message">Inventory saved with row id: </string>
+    <string name="success_message">Inventory saved</string>
     <string name="dummy_product_name">iPhone</string>
     <string name="dummy_supplier_name">Apple Corp.</string>
     <string name="dummy_supplier_phone">123–456–7890</string>
