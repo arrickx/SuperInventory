@@ -26,4 +26,7 @@
 
 * This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Acknowledgments
+
+* **Empty Inventory Icon** was provided by [TwoTwo](https://dribbble.com/shots/2246883-Collection-list-is-empty).
 
