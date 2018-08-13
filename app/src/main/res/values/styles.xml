@@ -23,6 +23,12 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="EmptyImg">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
     <style name="ListView">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
@@ -36,12 +42,28 @@
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_margin">@dimen/strong_padding</item>
     </style>
+
     <style name="LinearBaseLayout">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:paddingLeft">@dimen/simple_padding</item>
         <item name="android:paddingRight">@dimen/simple_padding</item>
+    </style>
+
+    <style name="ListViewLinearLayout">
+        <item name="android:layout_height">?android:attr/listPreferredItemHeight</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/simple_padding</item>
+        <item name="android:paddingRight">@dimen/simple_padding</item>
+    </style>
+
+    <style name="ListViewLinearLayout2">
+        <item name="android:layout_height">?android:attr/listPreferredItemHeight</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="EditorItemLayout">
@@ -70,17 +92,19 @@
 
     <style name="TextViewTitle">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/title</item>
     </style>
 
     <style name="TextViewDetail">
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
         <item name="android:textColor">@color/details</item>
     </style>
 </resources>

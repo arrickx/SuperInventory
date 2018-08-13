@@ -1,17 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Layout for a single list item in the list of pets -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/strong_padding">
+<?xml version="1.0" encoding="utf-8"?><!-- Layout for a single list item in the list of pets -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListViewLinearLayout">
 
-    <TextView
-        android:id="@+id/name"
-        style="@style/TextViewTitle"  />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/summary"
-        style="@style/TextViewDetail" />
+        <TextView
+            android:id="@+id/name"
+            style="@style/TextViewTitle" />
+
+        <LinearLayout style="@style/ListViewLinearLayout2">
+
+            <TextView
+                android:id="@+id/price"
+                style="@style/TextViewDetail" />
+
+            <TextView
+                android:id="@+id/quantity"
+                style="@style/TextViewDetail" />
+        </LinearLayout>
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Bind view with Butter Knife for cleaner code.
     @BindView(R.id.list) ListView inventoryListView;
+    @BindView(R.id.empty_view) View emptyView;
     @BindString(R.string.dummy_product_name) String dummyProductName;
     @BindString(R.string.dummy_supplier_name) String dummySupplierName;
     @BindString(R.string.dummy_supplier_phone) String dummySupplierPhone;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         // and pass the context, which is the current activity.
         mDbHelper = new InventoryDbHelper(this);
 
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        inventoryListView.setEmptyView(emptyView);
     }
 
     @Override

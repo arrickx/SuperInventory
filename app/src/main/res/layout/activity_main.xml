@@ -4,6 +4,11 @@
     style="@style/SimpleMatchParent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/empty_view"
+        style="@style/EmptyImg"
+        android:src="@drawable/emptyinventory" />
+
     <ListView
         android:id="@+id/list"
         style="@style/ListView" />

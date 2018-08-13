@@ -2,6 +2,7 @@ package com.example.android.superinventory;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,24 @@ import android.widget.TextView;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * {@link InventoryCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of inventory data as its data source. This adapter knows
  * how to create list items for each row of inventory data in the {@link Cursor}.
  */
 public class InventoryCursorAdapter extends CursorAdapter{
+
+    //Bind view with Butter Knife for cleaner code.
+    @BindView(R.id.name) TextView nameTextView;
+    @BindView(R.id.price) TextView priceTextView;
+    @BindView(R.id.quantity) TextView quantityTextView;
+    @BindString(R.string.out_of_stock) String outOfStock;
+    @BindString(R.string.dollar_sign) String dollar;
+    @BindString(R.string.current_quantity) String currentQuanity;
 
     /**
      * Constructs a new {@link InventoryCursorAdapter}.
@@ -54,20 +67,28 @@ public class InventoryCursorAdapter extends CursorAdapter{
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // Find individual views that we want to modify in the list item layout
-        TextView nameTextView = view.findViewById(R.id.name);
-        TextView summaryTextView = view.findViewById(R.id.summary);
+        ButterKnife.bind(this,view);
 
         // Find the important attributes
-        int productNameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME);
-        int productPriceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
+        int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME);
+        int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
+        int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
 
         // Read the attributes from the Cursor for the current inventory
-        String productName = cursor.getString(productNameColumnIndex);
-        String productPrice = cursor.getString(productPriceColumnIndex);
+        String productName = cursor.getString(nameColumnIndex);
+        String productPrice = dollar + cursor.getString(priceColumnIndex);
+        String productQuantity = currentQuanity + cursor.getString(quantityColumnIndex);
 
         // Update the TextViews with the attributes for the current inventory
         nameTextView.setText(productName);
-        summaryTextView.setText(productPrice);
+        priceTextView.setText(productPrice);
+
+        // If quantity is zero, instead of displaying 0, will display out of stock.
+        if(cursor.getInt(quantityColumnIndex)!=0) {
+            quantityTextView.setText(productQuantity);
+        } else {
+            quantityTextView.setText(outOfStock);
+        }
+
     }
 }
