@@ -1,22 +1,17 @@
 package com.example.android.superinventory;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
-import com.example.android.superinventory.data.InventoryDbHelper;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindString;
 import butterknife.BindView;

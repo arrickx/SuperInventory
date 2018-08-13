@@ -4,11 +4,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.example.android.superinventory.R;
-
-import butterknife.BindString;
-import butterknife.ButterKnife;
-
 public final class InventoryContract {
 
     // Create necessary object for further usage
