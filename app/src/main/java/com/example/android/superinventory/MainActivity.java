@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 import com.example.android.superinventory.data.InventoryDbHelper;
+import com.example.android.superinventory.data.InventoryProvider;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final int INVENTORY_LOADER = 0;
     private InventoryCursorAdapter mCursorAdapter;
-    private InventoryDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,6 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        mDbHelper = new InventoryDbHelper(this);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         inventoryListView.setEmptyView(emptyView);
