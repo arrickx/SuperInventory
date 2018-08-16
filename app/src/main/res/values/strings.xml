@@ -26,4 +26,6 @@
     <string name="out_of_stock">Out of Stock</string>
     <string name="current_quantity">Quantity:\u0020</string>
     <string name="dollar_sign">$\u0020</string>
+    <string name="add_an_inventory">Add an Inventory</string>
+    <string name="edit_an_inventory">Edit an Inventory</string>
 </resources>

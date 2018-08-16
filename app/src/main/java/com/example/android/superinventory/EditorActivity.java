@@ -1,6 +1,7 @@
 package com.example.android.superinventory;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -10,7 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.content.Loader;
+import android.app.LoaderManager;
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 
 import butterknife.BindString;
@@ -29,12 +31,32 @@ public class EditorActivity extends AppCompatActivity {
     @BindString(R.string.warning_message) String warningMessage;
     @BindString(R.string.error_message) String errorMessage;
     @BindString(R.string.success_message) String successMessage;
+    @BindString(R.string.add_an_inventory) String addInventory;
+    @BindString(R.string.edit_an_inventory) String editInventory;
+
+    // Identifier for the inventory data loader
+    private static final int EXISTING_INVENTORY_LOADER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         ButterKnife.bind(this);
+
+        // Examine the intent that was used to launch this activity,
+        Intent intent = getIntent();
+        Uri mCurrentUri = intent.getData();
+
+        // If the intent DOES NOT contain a inventory content URI, then we know that we are
+        // creating a new inventory.
+        if (mCurrentUri == null) {
+            // This is a new inventory, so change the app bar to say "Add a inventory"
+            setTitle(addInventory);
+
+        } else {
+            // Otherwise this is an existing inventory, so change app bar to say "Edit inventory"
+            setTitle(editInventory);
+        }
     }
 
     //Get user input from editor and save new inventory into database.
@@ -46,7 +68,7 @@ public class EditorActivity extends AppCompatActivity {
         String supplierPhoneString = mSupplierPhoneEditText.getText().toString().trim();
 
         // Create a ContentValues object where column names are the keys,
-        // and pet attributes from the editor are the values.
+        // and inventory attributes from the editor are the values.
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, productNameString);
         values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, productPriceString);

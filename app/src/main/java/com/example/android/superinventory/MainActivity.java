@@ -1,21 +1,21 @@
 package com.example.android.superinventory;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.CursorLoader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
@@ -25,7 +25,8 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     //Bind view with Butter Knife for cleaner code.
     @BindView(R.id.list) ListView inventoryListView;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     @BindString(R.string.error_message) String errorMessage;
     @BindString(R.string.log_tag_1) String logTag;
 
+    private static final int INVENTORY_LOADER = 0;
+    private InventoryCursorAdapter mCursorAdapter;
     private InventoryDbHelper mDbHelper;
 
     @Override
@@ -61,35 +64,31 @@ public class MainActivity extends AppCompatActivity {
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         inventoryListView.setEmptyView(emptyView);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
-    }
+        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
+        mCursorAdapter = new InventoryCursorAdapter(this,null);
+        inventoryListView.setAdapter(mCursorAdapter);
 
-    //Temporary helper method to display information about the database
-    private void displayDatabaseInfo() {
+        // Setup the item click listener
+        inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Create new intent to go to {@link EditorActivity}
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
 
-        String[] projection = {
-                InventoryEntry._ID,
-                InventoryEntry.COLUMN_PRODUCT_NAME,
-                InventoryEntry.COLUMN_PRODUCT_PRICE,
-                InventoryEntry.COLUMN_PRODUCT_QUANTITY,
-                InventoryEntry.COLUMN_SUPPLIER_NAME,
-                InventoryEntry.COLUMN_SUPPLIER_PHONE,
+                // Form the content URI that represents the specific item that was clicked on
+                Uri currentUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, l);
 
-        };
+                // Set the URI on the data field of the intent
+                intent.setData(currentUri);
 
-        // Perform a query on the inventory table
-        Cursor cursor = getContentResolver().query(InventoryEntry.CONTENT_URI, projection, null, null,null);
+                // Launch the EditorActivity to display the data for the current pet.
+                startActivity(intent);
+            }
+        });
 
-        // Setup an Adapter to create a list item for each row of data in the Cursor.
-        InventoryCursorAdapter adapter = new InventoryCursorAdapter(this, cursor);
-
-        // Attach the adapter to the ListView.
-        inventoryListView.setAdapter(adapter);
+        // Kick off loader
+        getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
 
     private void insertInventory() {
@@ -129,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertInventory();
-                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all:
@@ -138,5 +136,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String[] projection = {
+                InventoryEntry._ID,
+                InventoryEntry.COLUMN_PRODUCT_NAME,
+                InventoryEntry.COLUMN_PRODUCT_PRICE,
+                InventoryEntry.COLUMN_PRODUCT_QUANTITY,};
+
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,   // Parent activity context
+                InventoryEntry.CONTENT_URI,   // Provider content URI to query
+                projection,             // Columns to include in the resulting Cursor
+                null,                   // No selection clause
+                null,                   // No selection arguments
+                null);                  // Default sort order
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mCursorAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }
