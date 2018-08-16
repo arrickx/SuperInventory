@@ -38,6 +38,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @BindString(R.string.success_message) String successMessage;
     @BindString(R.string.error_message_update) String errorUpdate;
     @BindString(R.string.success_message_update) String successUpdate;
+    @BindString(R.string.error_message_delete) String errorDelete;
+    @BindString(R.string.success_message_delete) String sucessDelete;
     @BindString(R.string.add_an_inventory) String addInventory;
     @BindString(R.string.edit_an_inventory) String editInventory;
     @BindString(R.string.empty_string) String nothing;
@@ -75,6 +77,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // This is a new inventory, so change the app bar to say "Add a inventory"
             setTitle(addInventory);
 
+            // Invalidate the options menu, so the "Delete" menu option can be hidden.
+            invalidateOptionsMenu();
         } else {
             // Otherwise this is an existing inventory, so change app bar to say "Edit inventory"
             setTitle(editInventory);
@@ -173,6 +177,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new inventory, hide the "Delete" menu item.
+        if (mCurrentUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
+    }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
@@ -189,11 +203,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 checkData();
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
-                // Do nothing for now
+                // Pop up confirmation dialog for deletion
+                showDeleteConfirmationDialog();
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                // If the pet hasn't changed, continue with navigating up to parent activity
+                // If the inventory hasn't changed, continue with navigating up to parent activity
                 // which is the {@link CatalogActivity}.
                 if (!mHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
@@ -222,7 +237,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     @Override
     public void onBackPressed() {
-        // If the pet hasn't changed, continue with handling back button press
+        // If the inventory hasn't changed, continue with handling back button press
         if (!mHasChanged) {
             super.onBackPressed();
             return;
@@ -319,7 +334,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the inventory.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -328,5 +343,55 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    // Prompt the user to confirm that they want to delete this inventory
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the inventory.
+                deleteInventory();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the inventory.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    // Perform the deletion of the inventory in the database.
+    private void deleteInventory() {
+        // Only perform the delete if this is an existing inventory.
+        if (mCurrentUri != null) {
+            // Call the ContentResolver to delete the inventory at the given content URI.
+            // Pass in null for the selection and selection args because the mCurrentinventoryUri
+            // content URI already identifies the inventory that we want.
+            int rowsDeleted = getContentResolver().delete(mCurrentUri, null, null);
+
+            // Show a toast message depending on whether or not the delete was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, errorDelete, Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, sucessDelete, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        // Close the activity
+        finish();
     }
 }

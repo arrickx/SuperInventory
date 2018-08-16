@@ -10,6 +10,8 @@
     <string name="success_message">Inventory saved</string>
     <string name="error_message_update">Error with updating inventory</string>
     <string name="success_message_update">Inventory updated</string>
+    <string name="error_message_delete">Error with deleting inventory</string>
+    <string name="success_message_delete">Inventory deleted</string>
     <string name="dummy_product_name">iPhone</string>
     <string name="dummy_supplier_name">Apple Corp.</string>
     <string name="dummy_supplier_phone">123–456–7890</string>
@@ -34,4 +36,7 @@
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep Editing</string>
+    <string name="delete_dialog_msg">Do you want to delete this product?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

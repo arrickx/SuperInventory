@@ -111,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    // Helper method to delete all pets in the database.
+    private void deleteAll() {
+        int rowsDeleted = getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
+        Log.v("MainActivity", rowsDeleted + " rows deleted from pet database");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -128,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all:
-                // Do nothing for now
+                deleteAll();
                 return true;
         }
 
