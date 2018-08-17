@@ -41,6 +41,7 @@
         <LinearLayout style="@style/PhoneLinearLayout">
 
             <Button
+                android:id="@+id/add_inventory"
                 style="@style/WeightButton"
                 android:text="@string/add_inventory" />
 
@@ -51,6 +52,7 @@
                 android:inputType="number" />
 
             <Button
+                android:id="@+id/minus_inventory"
                 style="@style/WeightButton"
                 android:text="@string/minus_inventory" />
         </LinearLayout>
@@ -86,6 +88,7 @@
                 android:inputType="phone" />
 
             <Button
+                android:id="@+id/order_from_supplier"
                 style="@style/WeightButton"
                 android:text="@string/order" />
         </LinearLayout>
