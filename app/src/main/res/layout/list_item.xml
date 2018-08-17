@@ -21,6 +21,12 @@
                 android:id="@+id/quantity"
                 style="@style/TextViewDetail" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/sale"
+            style="@style/SimpleButton"
+            android:text="@string/sale" />
+
     </LinearLayout>
 
 
