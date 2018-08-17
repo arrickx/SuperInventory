@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
@@ -26,9 +28,10 @@ public class InventoryCursorAdapter extends CursorAdapter{
     @BindView(R.id.name) TextView nameTextView;
     @BindView(R.id.price) TextView priceTextView;
     @BindView(R.id.quantity) TextView quantityTextView;
+    @BindView(R.id.sale) Button saleButton;
     @BindString(R.string.out_of_stock) String outOfStock;
     @BindString(R.string.dollar_sign) String dollar;
-    @BindString(R.string.current_quantity) String currentQuanity;
+    @BindString(R.string.current_quantity) String currentQuantity;
 
     /**
      * Constructs a new {@link InventoryCursorAdapter}.
@@ -56,8 +59,8 @@ public class InventoryCursorAdapter extends CursorAdapter{
     }
 
     /**
-     * This method binds the pet data (in the current row pointed to by cursor) to the given
-     * list item layout. For example, the name for the current pet can be set on the name TextView
+     * This method binds the inventory data (in the current row pointed to by cursor) to the given
+     * list item layout. For example, the name for the current inventory can be set on the name TextView
      * in the list item layout.
      *
      * @param view    Existing view, returned earlier by newView() method
@@ -77,7 +80,7 @@ public class InventoryCursorAdapter extends CursorAdapter{
         // Read the attributes from the Cursor for the current inventory
         String productName = cursor.getString(nameColumnIndex);
         String productPrice = dollar + cursor.getString(priceColumnIndex);
-        String productQuantity = currentQuanity + cursor.getString(quantityColumnIndex);
+        String productQuantity = currentQuantity + cursor.getString(quantityColumnIndex);
 
         // Update the TextViews with the attributes for the current inventory
         nameTextView.setText(productName);
@@ -89,6 +92,5 @@ public class InventoryCursorAdapter extends CursorAdapter{
         } else {
             quantityTextView.setText(outOfStock);
         }
-
     }
 }

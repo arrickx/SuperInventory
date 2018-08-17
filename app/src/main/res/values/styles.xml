@@ -29,6 +29,13 @@
         <item name="android:focusable">false</item>
     </style>
 
+    <style name="WeightButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/empty</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:focusable">false</item>
+    </style>
+
     <style name="EmptyImg">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -79,6 +86,20 @@
         <item name="android:layout_marginTop">@dimen/simple_padding</item>
     </style>
 
+    <style name="PhoneEditTextLayout">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">@dimen/empty</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="PhoneLinearLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/empty</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
     <style name="EditorItemTitle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">@dimen/empty</item>
@@ -94,6 +115,13 @@
         <item name="android:layout_weight">2</item>
         <item name="android:imeOptions">actionNext</item>
         <item name="android:layout_marginRight">@dimen/strong_padding</item>
+    </style>
+
+    <style name="WeightEditTextLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/empty</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:imeOptions">actionNext</item>
     </style>
 
     <style name="TextViewTitle">

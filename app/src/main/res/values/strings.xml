@@ -40,7 +40,7 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="sale">sale</string>
-    <string name="call">call supplier</string>
+    <string name="order">Order</string>
     <string name="add_inventory">+</string>
     <string name="minus_inventory">-</string>
 </resources>

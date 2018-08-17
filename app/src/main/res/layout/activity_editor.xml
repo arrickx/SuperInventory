@@ -38,11 +38,22 @@
             style="@style/EditorItemTitle"
             android:text="@string/product_quantity" />
 
-        <EditText
-            android:id="@+id/edit_product_quantity"
-            style="@style/EditTextLayout"
-            android:hint="@string/product_quantity_hint"
-            android:inputType="number" />
+        <LinearLayout style="@style/PhoneLinearLayout">
+
+            <Button
+                style="@style/WeightButton"
+                android:text="@string/add_inventory" />
+
+            <EditText
+                android:id="@+id/edit_product_quantity"
+                style="@style/WeightEditTextLayout"
+                android:hint="@string/product_quantity_hint"
+                android:inputType="number" />
+
+            <Button
+                style="@style/WeightButton"
+                android:text="@string/minus_inventory" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -66,11 +77,18 @@
             style="@style/EditorItemTitle"
             android:text="@string/supplier_phone" />
 
-        <EditText
-            android:id="@+id/edit_supplier_phone"
-            style="@style/EditTextLayout"
-            android:hint="@string/supplier_phone_hint"
-            android:inputType="phone" />
+        <LinearLayout style="@style/PhoneLinearLayout">
+
+            <EditText
+                android:id="@+id/edit_supplier_phone"
+                style="@style/WeightEditTextLayout"
+                android:hint="@string/supplier_phone_hint"
+                android:inputType="phone" />
+
+            <Button
+                style="@style/WeightButton"
+                android:text="@string/order" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

@@ -16,12 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
-import com.example.android.superinventory.data.InventoryDbHelper;
-import com.example.android.superinventory.data.InventoryProvider;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements
     //Bind view with Butter Knife for cleaner code.
     @BindView(R.id.list) ListView inventoryListView;
     @BindView(R.id.empty_view) View emptyView;
+    @BindView(R.id.fab) FloatingActionButton fab;
     @BindString(R.string.dummy_product_name) String dummyProductName;
     @BindString(R.string.dummy_supplier_name) String dummySupplierName;
     @BindString(R.string.dummy_supplier_phone) String dummySupplierPhone;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        // Setup FloatingActionButton action
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         inventoryListView.setEmptyView(emptyView);
 
-        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
+        // Setup an Adapter to create a list item for each row of inventory data in the Cursor.
         mCursorAdapter = new InventoryCursorAdapter(this,null);
         inventoryListView.setAdapter(mCursorAdapter);
 
@@ -79,8 +79,15 @@ public class MainActivity extends AppCompatActivity implements
                 // Set the URI on the data field of the intent
                 intent.setData(currentUri);
 
-                // Launch the EditorActivity to display the data for the current pet.
-                startActivity(intent);
+
+
+                long viewId = view.getId();
+                if(viewId == R.id.sale){
+                    startActivity(intent);
+                } else {
+                    // Launch the EditorActivity to display the data for the current inventory.
+                    startActivity(intent);
+                }
             }
         });
 
@@ -111,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    // Helper method to delete all pets in the database.
+    // Helper method to delete all inventories in the database.
     private void deleteAll() {
         int rowsDeleted = getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
-        Log.v("MainActivity", rowsDeleted + " rows deleted from pet database");
+        Log.v("MainActivity", rowsDeleted + " rows deleted from inventory database");
     }
 
     @Override
