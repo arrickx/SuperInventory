@@ -105,6 +105,7 @@
         <item name="android:layout_width">@dimen/empty</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginLeft">@dimen/strong_padding</item>
         <item name="android:textSize">@dimen/editor_title_font_size</item>
     </style>
