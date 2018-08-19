@@ -37,7 +37,9 @@
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep Editing</string>
     <string name="delete_dialog_msg">Do you want to delete this product?</string>
+    <string name="delete_all_dialog_msg">WARNING! DO YOU WANT TO DELETE ALL THE PRODUCT?</string>
     <string name="delete">Delete</string>
+    <string name="delete_all">YES! DELETE ALL!</string>
     <string name="cancel">Cancel</string>
     <string name="sale">sale</string>
     <string name="order">Order</string>
@@ -45,4 +47,5 @@
     <string name="minus_inventory">-</string>
     <string name="sale_success">Congratulations! Item Sold!</string>
     <string name="sale_error">Currently out of stock! Can not process!</string>
+    <string name="inventory_error">Already out of stock!</string>
 </resources>

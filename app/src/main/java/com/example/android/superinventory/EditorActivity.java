@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +36,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @BindView(R.id.edit_product_quantity) EditText mProductQuantityEditText;
     @BindView(R.id.edit_supplier_name) EditText mSupplierNameEditText;
     @BindView(R.id.edit_supplier_phone) EditText mSupplierPhoneEditText;
+    @BindView(R.id.add_inventory) Button increaseInventory;
+    @BindView(R.id.minus_inventory) Button minusInventory;
+    @BindView(R.id.order_from_supplier) Button orderInventory;
     @BindString(R.string.warning_message) String warningMessage;
     @BindString(R.string.error_message) String errorMessage;
     @BindString(R.string.success_message) String successMessage;
@@ -45,6 +49,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @BindString(R.string.add_an_inventory) String addInventory;
     @BindString(R.string.edit_an_inventory) String editInventory;
     @BindString(R.string.empty_string) String nothing;
+    @BindString(R.string.inventory_error) String inventoryError;
 
     // Identifier for the inventory data loader
     private static final int EXISTING_INVENTORY_LOADER = 0;
@@ -96,6 +101,41 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mProductQuantityEditText.setOnTouchListener(mTouchListener);
         mSupplierNameEditText.setOnTouchListener(mTouchListener);
         mSupplierPhoneEditText.setOnTouchListener(mTouchListener);
+
+        // Set up on create listener for button
+        increaseInventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentQuantity = Integer.valueOf(mProductQuantityEditText.getText().toString());
+                int newQuantity = currentQuantity+1;
+                mProductQuantityEditText.setText(String.valueOf(newQuantity));
+            }
+        });
+
+        minusInventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentQuantity = Integer.valueOf(mProductQuantityEditText.getText().toString());
+                if (currentQuantity<1){
+                    Toast.makeText(view.getContext(), inventoryError, Toast.LENGTH_SHORT).show();
+                } else {
+                    int newQuantity = currentQuantity-1;
+                    mProductQuantityEditText.setText(String.valueOf(newQuantity));
+                }
+            }
+        });
+
+        orderInventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentPhoneNumber = mSupplierPhoneEditText.getText().toString().trim();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + currentPhoneNumber));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     //Get user input from editor and save inventory into database.

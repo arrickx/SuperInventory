@@ -1,14 +1,31 @@
 # Inventory App
 > This is an Inventory App that will allow a store to keep track of its inventory of products.
 
-[![Image](demo1.gif)](Image1)
-> Can be add dummy inventory to test it out
+[![Image](demo/demo1.gif)](Image1)
+> Let you know if nothing's here.
+> Test this app out by generating dummy inventory
 
-[![Image](demo2.gif)](Image2)
-> If you missing something, we will let you know
+[![Image](demo/demo2.gif)](Image2)
+> Add inventory by using the add icon on the bottom
 
-[![Image](demo3.gif)](Image3)
-> After you add it back, add it to the inventory
+[![Image](demo/demo3.gif)](Image3)
+> Sold something? Congradurations!
+> Sold something that's out of stock? No Way!
+
+[![Image](demo/demo4.gif)](Image4)
+> Add more stock by clicking or inputing
+
+[![Image](demo/demo5.gif)](Image5)
+> Want to order more? No problem, one calls away!
+
+[![Image](demo/demo6.gif)](Image6)
+> Don't carry this product anymore? just delete it.
+
+[![Image](demo/demo7.gif)](Image7)
+> Going out of business? Delete them all!
+
+[![Image](demo/demo8.gif)](Image8)
+> We will let you know if you missing something.
 
 ## Getting Started
 
