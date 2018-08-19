@@ -1,15 +1,17 @@
 package com.example.android.superinventory;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
 
@@ -32,6 +34,8 @@ public class InventoryCursorAdapter extends CursorAdapter{
     @BindString(R.string.out_of_stock) String outOfStock;
     @BindString(R.string.dollar_sign) String dollar;
     @BindString(R.string.current_quantity) String currentQuantity;
+    @BindString(R.string.sale_error) String saleError;
+    @BindString(R.string.sale_success) String saleSuccess;
 
     /**
      * Constructs a new {@link InventoryCursorAdapter}.
@@ -69,13 +73,13 @@ public class InventoryCursorAdapter extends CursorAdapter{
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
         ButterKnife.bind(this,view);
 
         // Find the important attributes
         int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME);
         int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
-        int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
+        final int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
 
         // Read the attributes from the Cursor for the current inventory
         String productName = cursor.getString(nameColumnIndex);
@@ -92,5 +96,46 @@ public class InventoryCursorAdapter extends CursorAdapter{
         } else {
             quantityTextView.setText(outOfStock);
         }
+
+        // Get the current position in the cursor
+        final int position = cursor.getPosition();
+
+        // Set on click listener for the sale button
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Move to cursor current position
+                cursor.moveToPosition(position);
+
+                // Read the current quantity
+                int quantity = cursor.getInt(quantityColumnIndex);
+
+                // if quantity less than 1, won't process anything
+                // otherwise will minus the inventory by 1.
+                if (quantity<1) {
+                    // Show a message when out of stock
+                    Toast.makeText(view.getContext(), saleError, Toast.LENGTH_SHORT).show();
+                } else {
+                    // Create ContentValue fo sale button
+                    ContentValues values = new ContentValues();
+
+                    // Get the current product ID
+                    int id = cursor.getInt(cursor.getColumnIndex(InventoryEntry._ID));
+
+                    // Set up the uri in the current position
+                    Uri currentUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+
+                    // Minus the quantity by 1 when an item sold
+                    quantity -= 1;
+
+                    // Update the quantity in the database
+                    values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+                    context.getContentResolver().update(currentUri, values, null, null);
+
+                    // Show a message when it sale
+                    Toast.makeText(view.getContext(), saleSuccess, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

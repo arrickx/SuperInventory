@@ -43,4 +43,6 @@
     <string name="order">Order</string>
     <string name="add_inventory">+</string>
     <string name="minus_inventory">-</string>
+    <string name="sale_success">Congratulations! Item Sold!</string>
+    <string name="sale_error">Currently out of stock! Can not process!</string>
 </resources>

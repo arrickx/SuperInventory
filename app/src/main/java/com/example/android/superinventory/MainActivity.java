@@ -1,22 +1,21 @@
 package com.example.android.superinventory;
 
+import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.content.CursorLoader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -79,15 +78,8 @@ public class MainActivity extends AppCompatActivity implements
                 // Set the URI on the data field of the intent
                 intent.setData(currentUri);
 
-
-
-                long viewId = view.getId();
-                if(viewId == R.id.sale){
-                    startActivity(intent);
-                } else {
-                    // Launch the EditorActivity to display the data for the current inventory.
-                    startActivity(intent);
-                }
+                // Launch the EditorActivity to display the data for the current pet.
+                startActivity(intent);
             }
         });
 

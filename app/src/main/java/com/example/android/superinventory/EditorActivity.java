@@ -1,9 +1,12 @@
 package com.example.android.superinventory;
 
+import android.app.AlertDialog;
+import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,10 +19,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.content.Loader;
-import android.app.LoaderManager;
+
 import com.example.android.superinventory.data.InventoryContract.InventoryEntry;
-import android.app.AlertDialog;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +41,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @BindString(R.string.error_message_update) String errorUpdate;
     @BindString(R.string.success_message_update) String successUpdate;
     @BindString(R.string.error_message_delete) String errorDelete;
-    @BindString(R.string.success_message_delete) String sucessDelete;
+    @BindString(R.string.success_message_delete) String successDelete;
     @BindString(R.string.add_an_inventory) String addInventory;
     @BindString(R.string.edit_an_inventory) String editInventory;
     @BindString(R.string.empty_string) String nothing;
@@ -121,10 +123,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Show a toast message depending on whether or not the insertion was successful.
             if (newUri == null) {
                 // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(this, successMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, successMessage, Toast.LENGTH_SHORT).show();
             }
         } else {
                 int rowsAffected = getContentResolver().update(mCurrentUri, values, null, null);
@@ -132,12 +134,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Show a toast message depending on whether or not the update was successful.
                 if (rowsAffected == 0) {
                     // If no rows were affected, then there was an error with the update.
-                    Toast.makeText(this, errorUpdate,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, errorUpdate, Toast.LENGTH_SHORT).show();
                 } else {
                     // Otherwise, the update was successful and we can display a toast.
-                    Toast.makeText(this, successUpdate,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, successUpdate, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -378,7 +378,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Only perform the delete if this is an existing inventory.
         if (mCurrentUri != null) {
             // Call the ContentResolver to delete the inventory at the given content URI.
-            // Pass in null for the selection and selection args because the mCurrentinventoryUri
+            // Pass in null for the selection and selection args because the mCurrentUri
             // content URI already identifies the inventory that we want.
             int rowsDeleted = getContentResolver().delete(mCurrentUri, null, null);
 
@@ -388,7 +388,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, errorDelete, Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, sucessDelete, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, successDelete, Toast.LENGTH_SHORT).show();
             }
         }
 
